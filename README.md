@@ -1,7 +1,11 @@
 # Pandoc-mermaid-crossref
 
-This project aims to combine pandoc, mermaid-cli, pandoc-crossref and markdown together to produce Microsoft Docx files
-with a title page and custom properties for use within the docx to create headers and footers for example.
+This project aims to combine pandoc, mermaid-cli, pandoc-crossref, pandoc-acro and markdown together to produce 
+Microsoft Docx files with a title page and custom properties for use within the docx to create headers and footers 
+for example.
+
+This idea was spawned from wanting to write documentation in markdown with Mermaid diagrams and having system
+requirements and tests exported from a tool that only exported DOCX or PDF. 
 
 ## Dependencies
 
@@ -9,7 +13,7 @@ with a title page and custom properties for use within the docx to create header
 
 [pandoc](https://github.com/jgm/pandoc)
 
-### Figure/Table/Section Referenceing
+### Figure/Table/Section Referencing
 
 [Pandoc CrossRef](https://github.com/lierdakil/pandoc-crossref)
 
@@ -64,3 +68,24 @@ classDiagram
 >Thanking mermaid.js for the example from https://mermaid.js.org/syntax/classDiagram.html
 
 The class diagram @fig:classDiagram can be referenced in the documentation like this.
+
+## Building the container
+
+> Note: This container is not published.
+
+`docker build . -t [tag_of_your_choice]`
+
+## Running the container
+
+Due to the need to run Pandoc with the mermaid-filter first and then again with all other filters, it is 
+recommended to write a script like the example one `example/example.sh`.
+
+`docker run --rm --volume "`pwd`:/data" --entrypoint "/data/example/example.sh" [tag_of_your_choice]`
+
+## Other options
+
+If you are required to combine a DOCX and a markdown before combining with the title page, use docxcompose (installed)
+to combine the documents in the following steps:
+1. Convert the markdown to docx
+2. `docxcompose file1.docx file2.docx -o combined.docx`
+3. run inject-properties.py with the title page and the combined.docx
