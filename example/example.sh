@@ -9,3 +9,6 @@ cd /data
 pandoc -d example/example_pandoc_mermaid.yaml --verbose
 pandoc -d example/example_pandoc.yaml --verbose
 python3 inject-properties.py -y $properties -i $docx -t $template -o $final_doc
+
+rm README_images.md
+rm README_final.docx
