@@ -1,0 +1,6 @@
+docx
+docxcompose
+click
+pyyaml
+pandoc-acro
+pandoc-crossref

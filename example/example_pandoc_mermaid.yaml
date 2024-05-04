@@ -1,0 +1,6 @@
+---
+input-file: README.md
+output-file: README_images.md
+filters:
+  - mermaid-filter
+...
