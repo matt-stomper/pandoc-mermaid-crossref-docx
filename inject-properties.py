@@ -13,6 +13,15 @@ import yaml
 @click.option('-t', help='Title page docx file')
 @click.option('-o', help='Output Docx file')
 def combine_properties_document(y, i, t, o):
+    """
+    This function takes a title page and a docx file and adds in custom properties to both documents
+    before appending the input docx into the title page docx.
+    :param y: Yaml file containing custom properties
+    :param i: Docx input containing the main content of the document
+    :param t: Docx title page
+    :param o: Save location of final document
+    :return: None
+    """
     if not os.path.exists(i):
         print('Input Docx file does not exist')
         exit()
@@ -31,12 +40,23 @@ def combine_properties_document(y, i, t, o):
 
 
 def read_properties_from_yaml(file_path) -> Any:
+    """
+    This function takes a yaml file and returns back a list of custom properties
+    :param file_path: path to yaml file containing custom properties
+    :return: Any object returned from safe_load
+    """
     with open(file_path, 'r') as f:
         properties = yaml.safe_load(f)
         return properties
 
 
 def inject_properties_into_document(document_path: str, properties: Any) -> Document:
+    """
+    This function injects custom properties into a docx using docxcompose
+    :param document_path: path to docx
+    :param properties: List of custom properties
+    :return: docxcompose document with injected custom properties
+    """
     doc = Document(document_path)
     custom_properties = CustomProperties(doc)
 
