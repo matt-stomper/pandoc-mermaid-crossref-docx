@@ -1,0 +1,9 @@
+---
+input-file: README_images.md
+output-file: README_final.docx
+filters:
+  - pandoc-acro
+  - pandoc-crossref
+  - filters/page_break_heading_1.lua
+metadata-file: example/example_custom_properties.yaml
+...

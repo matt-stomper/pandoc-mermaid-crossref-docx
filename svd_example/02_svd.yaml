@@ -1,0 +1,6 @@
+---
+input-file: 02-svd.md
+output-file: 03-svd.md
+filters:
+  - mermaid-filter
+...
