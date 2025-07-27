@@ -1,0 +1,7 @@
+---
+input-file: svd.md
+output-file: 02-svd.md
+filters:
+  - pandoc-include
+  - pandoc-acro
+...

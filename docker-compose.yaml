@@ -1,0 +1,13 @@
+services:
+  pandoc-mermaid-crossref:
+    platform: linux/amd64
+    build:
+      context: .
+    image: puppeteer-pandoc-mermaid-crossref
+#    entrypoint: svd.sh
+    working_dir: /data/svd_example
+    entrypoint: bash
+    stdin_open: true
+    tty: true
+    volumes:
+      - $PWD:/data

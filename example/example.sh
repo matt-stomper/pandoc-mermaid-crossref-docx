@@ -5,10 +5,9 @@ final_doc=final_doco.docx
 template=example/title_page.docx
 properties=example/example_custom_properties.yaml
 
-cd /data
 pandoc -d example/example_pandoc_mermaid.yaml --verbose
 pandoc -d example/example_pandoc.yaml --verbose
 python3 inject-properties.py -y $properties -i $docx -t $template -o $final_doc
 
-rm README_images.md
-rm README_final.docx
+[ -f README_images.md ] && rm README_images.md
+[ -f README_final.docx ] && rm README_final.docx
