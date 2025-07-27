@@ -4,4 +4,3 @@ click
 pyyaml
 pandoc-acro
 pandoc-include
-pandoc-crossref
