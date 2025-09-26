@@ -39,4 +39,3 @@ ENV PATH=$PATH:/usr/local/bin/
 
 USER node
 COPY .puppeteer.json /home/node/.puppeteer.json
-#RUN chown 10042:999 /home/pptruser/.puppeteer.json
