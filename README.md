@@ -71,16 +71,19 @@ The class diagram @fig:classDiagram can be referenced in the documentation like 
 
 ## Building the container
 
-> Note: This container is not published.
-
-`docker build . -t [tag_of_your_choice]`
+Run `docker compose build pandoc-mermaid-crossref`
 
 ## Running the container
 
-Due to the need to run Pandoc with the mermaid-filter first and then again with all other filters, it is 
-recommended to write a script like the example one `example/example.sh`.
+From the `svd_example`, the build process is staged to allow for success of the different filters to run.
 
-`docker run --rm --volume "`pwd`:/data" --entrypoint "/data/example/example.sh" [tag_of_your_choice]`
+01_svd.yaml runs `pandoc_include` and `pandoc_acro`
+02_svd.yaml runs mermaid filter
+03_svd.yaml runs the final conversion to docx
+
+03_svd.yaml can be substituted for a HTML or PDF. 
+
+Compile the DOCX with `docker compose run --rm pandoc-mermaid-crossref`
 
 ## Other options
 
