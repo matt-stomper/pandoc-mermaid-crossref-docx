@@ -1,3 +1,4 @@
+import logging
 from typing import Any
 from docx import Document
 from docxcompose.composer import Composer
@@ -34,7 +35,7 @@ def combine_properties_document(y, i, t, o):
     title_doc = inject_properties_into_document(t, properties)
     composer = Composer(title_doc)
     doc = inject_properties_into_document(i, properties)
-    composer.append(doc)
+    composer.append(doc, remove_property_fields=False)
 
     composer.save(o)
 
@@ -61,6 +62,7 @@ def inject_properties_into_document(document_path: str, properties: Any) -> Docu
     custom_properties = CustomProperties(doc)
 
     for key, value in properties.items():
+        print(f'Injecting custom properties {key}: {value}')
         if custom_properties.get(key) is not None:
             custom_properties[key] = value
 
@@ -69,7 +71,8 @@ def inject_properties_into_document(document_path: str, properties: Any) -> Docu
         else:
             custom_properties.add(key, value)
 
-        return doc
+        custom_properties.update_all()
+    return doc
 
 
 if __name__ == '__main__':

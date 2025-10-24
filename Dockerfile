@@ -13,11 +13,11 @@ RUN apt install -y \
     python3  \
     python3-pip
 
-RUN curl -L -o /tmp/pandoc.deb https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-1-amd64.deb
+RUN curl -L -o /tmp/pandoc.deb https://github.com/jgm/pandoc/releases/download/3.8.2.1/pandoc-3.8.2.1-1-amd64.deb
 RUN apt-get install -y /tmp/pandoc.deb
 RUN rm /tmp/pandoc.deb
 
-RUN curl -L -o pandoc-crossref.tar.xz https://github.com/lierdakil/pandoc-crossref/releases/download/v0.3.20/pandoc-crossref-Linux-X64.tar.xz
+RUN curl -L -o pandoc-crossref.tar.xz https://github.com/lierdakil/pandoc-crossref/releases/download/v0.3.22a/pandoc-crossref-Linux-X64.tar.xz
 RUN tar -xf pandoc-crossref.tar.xz
 RUN mv pandoc-crossref /usr/local/bin/
 RUN chmod +x /usr/local/bin/pandoc-crossref
