@@ -3,7 +3,7 @@ services:
     platform: linux/amd64
     build:
       context: .
-    image: matt_stomper/puppeteer-pandoc-mermaid-crossref:1.0.1
+    image: mattstomper/puppeteer-pandoc-mermaid-crossref:1.0.2
     entrypoint: ./svd.sh
     working_dir: /home/node/data/svd_example
     command: bash
