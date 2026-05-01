@@ -1,14 +1,20 @@
-import logging
-from typing import Any
+from pathlib import Path
+
+import click
+import yaml
+
 from docx import Document
 from docxcompose.composer import Composer
 from docxcompose.properties import CustomProperties
-import click
-import os
-import yaml
+from typing import Any
 
 
-@click.command()
+@click.group()
+def cli():
+    """A CLI tool for working with docx files and custom properties."""
+    pass
+
+@cli.command()
 @click.option('-y', help='yaml files containing custom properties', required=True)
 @click.option('-i', help='Input Docx file', required=True)
 @click.option('-t', help='Title page docx file')
@@ -23,18 +29,24 @@ def combine_properties_document(y, i, t, o):
     :param o: Save location of final document
     :return: None
     """
-    if not os.path.exists(i):
-        print('Input Docx file does not exist')
+    input_docx = Path(i)
+    title_docx = Path(t)
+    output_docx = Path(o)
+    custom_properties = Path(y)
+
+    if not _validate_input_files(input_docx, required=True):
         exit()
 
-    if not os.path.exists(y):
-        print('Yaml properties file does not exist')
+    if not _validate_input_files(custom_properties, required=False):
+        exit()
+
+    if not _validate_input_files(title_docx, required=False):
         exit()
 
     properties = read_properties_from_yaml(y)
-    title_doc = inject_properties_into_document(t, properties)
+    title_doc = _inject_properties(document_path=t, properties=properties)
     composer = Composer(title_doc)
-    doc = inject_properties_into_document(i, properties)
+    doc = _inject_properties(i, properties)
     composer.append(doc, remove_property_fields=False)
 
     composer.save(o)
@@ -50,7 +62,9 @@ def read_properties_from_yaml(file_path) -> Any:
         properties = yaml.safe_load(f)
         return properties
 
-
+@cli.command
+@click.option('-document-path', help='.docx document needing the custom properties.', required=True)
+@click.option('-properties', help='yaml files containing custom properties.', required=True)
 def inject_properties_into_document(document_path: str, properties: Any) -> Document:
     """
     This function injects custom properties into a docx using docxcompose
@@ -58,6 +72,9 @@ def inject_properties_into_document(document_path: str, properties: Any) -> Docu
     :param properties: List of custom properties
     :return: docxcompose document with injected custom properties
     """
+    return _inject_properties(document_path, properties)
+
+def _inject_properties(document_path: str, properties: Any):
     doc = Document(document_path)
     custom_properties = CustomProperties(doc)
 
@@ -74,6 +91,17 @@ def inject_properties_into_document(document_path: str, properties: Any) -> Docu
         custom_properties.update_all()
     return doc
 
+def _validate_input_files(path: Path, required: bool = True) -> bool:
+    if not path.exists():
+        if required:
+            raise FileNotFoundError(f'File {path} does not exist')
+        else:
+            return False
+    return True
+
 
 if __name__ == '__main__':
-    combine_properties_document()
+    try:
+        cli()
+    except FileNotFoundError as e:
+        print(e)
