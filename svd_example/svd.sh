@@ -28,7 +28,7 @@ echo "Running 03_svd.yaml..."
 pandoc -d 03_svd.yaml || cleanup_working_files
 
 echo "Running inject-properties.py..."
-python3 -m docx_tools.inject-properties combine-properties-document -y $properties -i $docx -t $template -o $final_doc
+python3 -m docx_tools.inject_properties combine-properties-document -y $properties -i $docx -t $template -o $final_doc
 
 cleanup_working_files
 
