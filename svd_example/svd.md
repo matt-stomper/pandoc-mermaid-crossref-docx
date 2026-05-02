@@ -47,7 +47,7 @@ The version comprises the following files, directories, and artifacts:
 
 **Software**:
 - Gunicorn Version: 20.1.0
-- Python Version: 3.9+
+- Python Version: 3.12+
 - Flask Version: 2.3.2
 - Docker Version: 23.0.1
 

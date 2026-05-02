@@ -1,4 +1,8 @@
 ---
+acronym-list:
+  format: table
+  caption: List of acronyms {#tbl:list-acronyms}
+
 acronyms:
   http:
     short: HTTP

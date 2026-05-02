@@ -29,7 +29,7 @@ WORKDIR /tmp
 RUN curl -sS https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3 get-pip.py --verbose
 
-RUN curl -L -o /tmp/pandoc.deb https://github.com/jgm/pandoc/releases/download/3.9/pandoc-3.9-1-amd64.deb
+RUN curl -L -o /tmp/pandoc.deb https://github.com/jgm/pandoc/releases/download/3.9.0.2/pandoc-3.9.0.2-1-amd64.deb
 RUN apt-get install -y /tmp/pandoc.deb
 RUN rm /tmp/pandoc.deb
 
@@ -45,10 +45,11 @@ RUN npm install -g mermaid-filter --unsafe-perm=true
 RUN mkdir -p /app
 
 COPY filters/page_break_heading_1.lua /app/page_break_heading_1.lua
-COPY dist/docx_tools-1.0.0-py2.py3-none-any.whl /app/docx_tools-1.0.0-py2.py3-none-any.whl
+COPY filters/pandoc_acro-0.11.0-py3-none-any.whl /app/pandoc_acro-0.11.0-py3-none-any.whl
+COPY dist/docx_tools-1.0.2-py3-none-any.whl /app/docx_tools-1.0.2-py3-none-any.whl
 
-RUN pip install /app/docx_tools-1.0.0-py2.py3-none-any.whl
-
+RUN pip install /app/docx_tools-1.0.2-py3-none-any.whl
+RUN pip install /app/pandoc_acro-0.11.0-py3-none-any.whl
 
 RUN chmod 1777 /tmp
 ENV PATH=$PATH:/usr/local/bin/
