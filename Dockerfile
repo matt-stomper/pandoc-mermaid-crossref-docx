@@ -44,12 +44,13 @@ RUN npm install -g mermaid-filter --unsafe-perm=true
 
 RUN mkdir -p /app
 
-COPY filters/page_break_heading_1.lua /app/page_break_heading_1.lua
 COPY filters/pandoc_acro-0.11.0-py3-none-any.whl /app/pandoc_acro-0.11.0-py3-none-any.whl
+COPY filters/more_pandoc_filters-0.1.0-py3-none-any.whl /app/more_pandoc_filters-0.1.0-py3-none-any.whl
 COPY dist/docx_tools-1.0.2-py3-none-any.whl /app/docx_tools-1.0.2-py3-none-any.whl
 
 RUN pip install /app/docx_tools-1.0.2-py3-none-any.whl
 RUN pip install /app/pandoc_acro-0.11.0-py3-none-any.whl
+RUN pip install /app/more_pandoc_filters-0.1.0-py3-none-any.whl
 
 RUN chmod 1777 /tmp
 ENV PATH=$PATH:/usr/local/bin/
