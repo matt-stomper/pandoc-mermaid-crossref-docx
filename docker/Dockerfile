@@ -1,4 +1,4 @@
-FROM ghcr.io/puppeteer/puppeteer:24.37.5
+FROM ghcr.io/puppeteer/puppeteer:25.3.0
 
 USER root
 ENV PIP_BREAK_SYSTEM_PACKAGES=1 \
@@ -7,7 +7,7 @@ ENV PIP_BREAK_SYSTEM_PACKAGES=1 \
 
 RUN wget -qO- https://pascalroeleven.nl/deb-pascalroeleven.gpg | tee /etc/apt/keyrings/deb-pascalroeleven.gpg
 
-COPY docker/pascalroeleven.sources /etc/apt/sources.list.d/pascalroeleven.sources
+COPY pascalroeleven.sources /etc/apt/sources.list.d/pascalroeleven.sources
 
 RUN apt update
 
@@ -45,11 +45,12 @@ RUN npm install -g mermaid-filter
 
 RUN mkdir -p /app
 
-COPY filters/pandoc_acro-0.11.0-py3-none-any.whl /app/pandoc_acro-0.11.0-py3-none-any.whl
-COPY filters/more_pandoc_filters-0.1.0-py3-none-any.whl /app/more_pandoc_filters-0.1.0-py3-none-any.whl
-COPY dist/docx_tools-1.0.2-py3-none-any.whl /app/docx_tools-1.0.2-py3-none-any.whl
+COPY ../filters/pandoc_acro-0.11.0-py3-none-any.whl /app/pandoc_acro-0.11.0-py3-none-any.whl
+COPY ../filters/more_pandoc_filters-0.1.0-py3-none-any.whl /app/more_pandoc_filters-0.1.0-py3-none-any.whl
+COPY ../filters/docx_tools-1.0.3-py3-none-any.whl /app/docx_tools-1.0.3-py3-none-any.whl
 
-RUN pip install /app/docx_tools-1.0.2-py3-none-any.whl && rm /app/docx_tools-1.0.2-py3-none-any.whl
+RUN pip install pandoc-include
+RUN pip install /app/docx_tools-1.0.3-py3-none-any.whl && rm /app/docx_tools-1.0.3-py3-none-any.whl
 RUN pip install /app/pandoc_acro-0.11.0-py3-none-any.whl && rm /app/pandoc_acro-0.11.0-py3-none-any.whl
 RUN pip install /app/more_pandoc_filters-0.1.0-py3-none-any.whl && rm /app/more_pandoc_filters-0.1.0-py3-none-any.whl
 
@@ -57,5 +58,5 @@ RUN chmod 1777 /tmp
 ENV PATH=$PATH:/usr/local/bin/
 
 USER node
-COPY .puppeteer.json /home/node/.puppeteer.json
+COPY ../.puppeteer.json /home/node/.puppeteer.json
 

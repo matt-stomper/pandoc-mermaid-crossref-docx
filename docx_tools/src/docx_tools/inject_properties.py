@@ -4,6 +4,9 @@ import click
 import yaml
 
 from docx import Document
+from docx.document import Document as DocumentObject
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 from docxcompose.composer import Composer
 from docxcompose.properties import CustomProperties
 from typing import Any
@@ -19,7 +22,8 @@ def cli():
 @click.option('-i', help='Input Docx file', required=True)
 @click.option('-t', help='Title page docx file')
 @click.option('-o', help='Output Docx file')
-def combine_properties_document(y, i, t, o):
+@click.option('-u', help='Force updates in the word document', is_flag=True, default=True)
+def combine_properties_document(y, i, t, o, u):
     """
     This function takes a title page and a docx file and adds in custom properties to both documents
     before appending the input docx into the title page docx.
@@ -27,12 +31,13 @@ def combine_properties_document(y, i, t, o):
     :param i: Docx input containing the main content of the document
     :param t: Docx title page
     :param o: Save location of final document
+    :param u: Trigger updates in the word document
     :return: None
     """
     input_docx = Path(i)
     title_docx = Path(t)
-    output_docx = Path(o)
     custom_properties = Path(y)
+    update_fields = bool(u)
 
     if not _validate_input_files(input_docx, required=True):
         exit()
@@ -44,12 +49,32 @@ def combine_properties_document(y, i, t, o):
         exit()
 
     properties = read_properties_from_yaml(y)
-    title_doc = _inject_properties(document_path=t, properties=properties)
-    composer = Composer(title_doc)
-    doc = _inject_properties(i, properties)
+    title_doc: DocumentObject = _inject_properties(document_path=t, properties=properties)
+    composer: Composer = Composer(title_doc)
+    doc: DocumentObject = _inject_properties(i, properties)
     composer.append(doc, remove_property_fields=False)
 
+    if update_fields:
+        _mark_fields_for_update_on_open(title_doc)
+
     composer.save(o)
+
+
+def _mark_fields_for_update_on_open(doc: DocumentObject) -> None:
+    """
+    Request Word to update all document fields when the file is opened.
+
+    This includes fields used by tables of contents, tables of figures,
+    cross-references, page numbers, and similar Word-generated content.
+    """
+    settings = doc.settings.element
+    update_fields = settings.find(qn('w:updateFields'))
+
+    if update_fields is None:
+        update_fields = OxmlElement('w:updateFields')
+        settings.append(update_fields)
+
+    update_fields.set(qn('w:val'), 'true')
 
 
 def read_properties_from_yaml(file_path) -> Any:
@@ -65,7 +90,7 @@ def read_properties_from_yaml(file_path) -> Any:
 @cli.command
 @click.option('-document-path', help='.docx document needing the custom properties.', required=True)
 @click.option('-properties', help='yaml files containing custom properties.', required=True)
-def inject_properties_into_document(document_path: str, properties: Any) -> Document:
+def inject_properties_into_document(document_path: str, properties: Any) -> DocumentObject:
     """
     This function injects custom properties into a docx using docxcompose
     :param document_path: path to docx
@@ -74,7 +99,7 @@ def inject_properties_into_document(document_path: str, properties: Any) -> Docu
     """
     return _inject_properties(document_path, properties)
 
-def _inject_properties(document_path: str, properties: Any):
+def _inject_properties(document_path: str, properties: Any) -> DocumentObject:
     doc = Document(document_path)
     custom_properties = CustomProperties(doc)
 
@@ -98,7 +123,6 @@ def _validate_input_files(path: Path, required: bool = True) -> bool:
         else:
             return False
     return True
-
 
 if __name__ == '__main__':
     try:

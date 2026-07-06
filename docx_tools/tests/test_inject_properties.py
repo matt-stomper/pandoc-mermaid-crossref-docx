@@ -2,13 +2,10 @@ from pathlib import Path
 from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
+from docx_tools.inject_properties import read_properties_from_yaml, _validate_input_files, _inject_properties, \
+    combine_properties_document
 
-from docx_tools.inject_properties import (
-    _inject_properties,
-    _validate_input_files,
-    combine_properties_document,
-    read_properties_from_yaml,
-)
+
 
 
 def test_read_properties_from_yaml_returns_safe_loaded_yaml():

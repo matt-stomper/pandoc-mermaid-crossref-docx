@@ -5,7 +5,7 @@ filters:
   - pandoc-crossref
   - level-1-heading-page-break
   - landscape-section-filter
-toc: true
+toc: false
 toc-depth: 5
 reference-doc: reference_doc.docx
 metadata:

@@ -104,17 +104,21 @@ _Tested Environments_:
       cd [repository-directory]
 ```
 1. Build Docker image:
+
 ``` bash
       docker-compose up --build
 ```
+
 1. Access application at `http://localhost:5000`.
 
 **Standalone Installation (non-docker)**:
+
 ``` bash
    pip install -r requirements.txt
    gunicorn -w 4 -b 127.0.0.1:5000 app:app
 ```
 # References
+
 - MIL-STD-498 Documentation
 - Flask Documentation: [https://flask.palletsprojects.com/](https://flask.palletsprojects.com/)
 - Gunicorn Documentation: [https://gunicorn.org/](https://gunicorn.org/)
@@ -127,7 +131,6 @@ This should follow the format and structure derived from MIL-STD-498, tailored f
 ## Acronyms
 
 ## Terminology
-
 
 | Term                    | Definition                                                                                                                                           |
 |-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -147,12 +150,6 @@ This should follow the format and structure derived from MIL-STD-498, tailored f
 | **REST API**            | A type of API built using Representational State Transfer principles, allowing stateless communication between the client and server over HTTP.      |
 
 : Terminology Table {#tbl:terminology}
-
-
-\listoffigures
-
-
-\listoftables
 
 :::landscape
 
