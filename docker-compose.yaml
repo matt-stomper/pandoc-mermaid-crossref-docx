@@ -1,13 +1,17 @@
-services:
-  pandoc-mermaid-crossref:
+x-shared-defaults: &defaults
     platform: linux/amd64
     build:
       context: .
-    image: mattstomper/puppeteer-pandoc-mermaid-crossref:1.1.0-rc1
+    image: mattstomper/puppeteer-pandoc-mermaid-crossref:1.1.0-rc2
+
+services:
+  pandoc-mermaid-crossref:
+    <<: *defaults
     entrypoint: ./svd.sh
     working_dir: /home/node/data/svd_example
-    command: bash
-    stdin_open: true
-    tty: true
     volumes:
       - ./svd_example:/home/node/data/svd_example
+
+  bash:
+    <<: *defaults
+    entrypoint: /bin/bash
