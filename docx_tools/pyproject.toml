@@ -20,8 +20,12 @@ dependencies = [
 requires = ["uv_build>=0.7.19,<0.8.0"]
 build-backend = "uv_build"
 
+[project.scripts]
+docx_tools = "docx_tools:inject_properties.cli"
+
 [dependency-groups]
 dev = [
+    "faker>=40.28.1",
     "pytest>=9.1.1",
     "pytest-click>=1.1.0",
 ]

@@ -11,6 +11,9 @@ It can:
 - Update fields that reference custom properties in the document.
 - Combine a title page document with a main document after applying the same custom properties to both.
 
+## Shout Out
+Big shout out to the team developing [docxcompose](https://github.com/4teamwork/docxcompose) for maintain the Python library for concatenating `docx` files.
+
 ## Features
 
 ### Inject custom properties into a DOCX file
@@ -50,17 +53,49 @@ Custom properties should be provided as a YAML mapping.
 Example:
 
 ```yaml
-DocumentTitle: System Design Document 
-DocumentNumber: SDD-001 
-Revision: A 
-Author: Jane Smith 
-ProjectName: Example Project
+custom_properties:
+  DocumentTitle: System Design Document 
+  DocumentNumber: SDD-001 
+  Revision: A 
+  Author: Jane Smith 
+  ProjectName: Example Project
+
 ```
 
-```bash 
-python src/docx_tools/inject_properties.py combine-properties-document
--y properties.yaml
--i input.docx
--t title-page.docx
--o output.docx
+### Revisions
+
+A revisions table can be updated within a word doc. The simplest way to do this is to put a revision table in the document however, some companies have 
+title page templates that the document needs to be created after. Docx_tools allows the user to specify a revisions table in the word doc, wrap it in a bookmark and inject the revision into the table.
+
+A revision table in the word doc can be injected by:
+
+1. Specifying the bookmark name in the yaml (Word will only allow bookmarks to be named with a capital letter).
+2. Adding `-r name_of_revision_property` to the command line.
+
+```yaml
+revisions_table:
+  bookmark: "Revision_table"
+  rev_1:
+    number: "1"
+    date: "2026-07-07"
+    description: "Initial release"
+  rev_2:
+    number: "2"
+    date: "2026-10-07"
+    description: "Future release"
 ```
+When there are additional properties specified but do not have a column not in the table, the columns will be added to the originating table.
+
+## Shell Command
+
+```bash 
+python src/docx_tools/inject_properties.py combine-properties-document \
+-y properties.yaml \
+-r revisions_table \
+-i input.docx \
+-t title-page.docx \
+-o output.docx \
+-u
+```
+
+

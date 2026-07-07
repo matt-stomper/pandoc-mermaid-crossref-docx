@@ -1,11 +1,18 @@
 # Pandoc-mermaid-crossref
 
-This project aims to combine pandoc, mermaid-cli, pandoc-crossref, pandoc-acro and markdown together to produce 
+This project aims to combine pandoc, mermaid-cli, pandoc-crossref, pandoc-acro, pandoc-include and markdown together to produce 
 Microsoft Docx files with a title page and custom properties for use within the docx to create headers and footers 
 for example.
 
-This idea was spawned from wanting to write documentation in markdown with Mermaid diagrams and having system
-requirements and tests exported from a tool that only exported DOCX or PDF. 
+This idea was spawned for a few reasons:
+
+1. Incorporating the documentation into development instead of it being at the end.
+2. Version control design dicuments with `git`. We now have the ability to write documentation in Markdown with Mermaid diagrams
+3. System requirements and tests exported from a tool that only exported DOCX or PDF can be appended to documents or incorporated within the document.
+4. Latex is great, and this tool is partially trying to do what Latex does; but having managers in the corporate space trying to write Latex for minor revisions
+is too much of a learning curve.
+5. Other tools (such as Jira) export to CSV or have API where queries can be run and then parsed into Markdown.
+This Markdown can then be included in the original Markdown document and rendered into a Microsoft Docx file.
 
 ## Dependencies
 
@@ -31,47 +38,28 @@ These passes are:
 1. Convert with the mermaid-filter the markdown with mermaid to markdown with image (that is built with mermaid)
 1. Convert the markdown with images through the remaining filters and convert to docx
 
-#### Example Mermaid with pandoc-crossref caption.
-
->Note: This mermaid diagram will not render in most previews due to the addition of the caption.
- 
-```{.mermaid format=png loc=images caption="Class Diagram" #fig:classDiagram}
-
----
-title: Animal example
----
-classDiagram
-    note "From Duck till Zebra"
-    Animal <|-- Duck
-    note for Duck "can fly\ncan swim\ncan dive\ncan help in debugging"
-    Animal <|-- Fish
-    Animal <|-- Zebra
-    Animal : +int age
-    Animal : +String gender
-    Animal: +isMammal()
-    Animal: +mate()
-    class Duck{
-        +String beakColor
-        +swim()
-        +quack()
-    }
-    class Fish{
-        -int sizeInFeet
-        -canEat()
-    }
-    class Zebra{
-        +bool is_wild
-        +run()
-    }
-
-```
->Thanking mermaid.js for the example from https://mermaid.js.org/syntax/classDiagram.html
-
-The class diagram @fig:classDiagram can be referenced in the documentation like this.
-
 ## Building the container
 
-Run `docker compose build pandoc-mermaid-crossref`
+```shell
+uv venv # or  
+python3 -m venv .venv
+```
+
+```shell
+source .venv/bin/activate
+```
+
+```shell
+uv pip install poethepoet # or
+pip install poethepoet
+```
+
+```shell
+poe build-docker
+```
+
+The breakdown or what is in this command is in poe_tasks.toml
+
 
 ## Running the container
 
@@ -92,3 +80,65 @@ to combine the documents in the following steps:
 1. Convert the markdown to docx
 2. `docxcompose file1.docx file2.docx -o combined.docx`
 3. run inject-properties.py with the title page and the combined.docx
+
+
+## Syntax
+
+### Referencing from Pandoc Crossref
+
+ - {#fig:image_reference} to create the reference and @fig:reference to reference the figure
+ - {#tble:table_reference} to create the reference and @tble:table_reference to reference the table
+ - {#sec:section_reference} to create the reference and @sec:section_reference to reference the section
+ - {lst:listing_reference} to create the reference and @lst:listing_reference to reference the listing
+
+### Mermaid Images
+
+Including mermaid diagrams in the markdown file requires the mermaid filter to be run before pandoc-crossref. 
+Mermaid filter needs to create the image first before it can be referenced by pandoc-crossref.
+
+Combining the Mermaid with pandoc-crossref requires the following syntax:
+
+```markdown
+```{.mermaid caption="Mermaid image caption" #fig:mermaid_reference}
+flowchart TD
+  ...
+```
+### Acronyms
+
+[pandoc-acro](https://kprussing.github.io/pandoc-acro/) uses the acronym.yaml to define the acronyms. They are referenced as `+acro` with the `+` defining the acronym.
+
+The version of pandoc-acro in the Docker container uses some extra yaml keys to allow the user to define the acronym as a list or a table with a caption.
+This container uses this PR for the code. [pandoc-acro PR](https://github.com/matt-stomper/pandoc-acro). I'm not sure if it will get merged or not.
+
+```yaml
+acronym-list:
+  format: table
+  caption: List of acronyms {#tbl:list-acronyms} 
+```
+
+## more-pandoc-filters
+
+This container uses a few extra filters to create the engineering documentation to match the DI-IPSC-814** specs.
+
+### Landscape filter
+
+The landscape filter is a docx filter that allow the user to mark a section as landscape. It creates a section break making the new section landscape.
+At the end of the `div`, it creates another break returning the document to portait.
+
+```markdown
+::: landscape
+:::
+```
+
+### Level 1 heading break filter
+
+This filter puts a page break before each level 1 heading.
+
+### Bibliography-table-filter
+
+This filter takes the references from pandoc-citeproc and puts the references in a single column table.
+This filter is still going through some improvements.
+
+## Docx_tools
+
+Read about [docx_tools here](docx_tools/README.md)

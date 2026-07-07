@@ -46,13 +46,13 @@ RUN npm install -g mermaid-filter
 RUN mkdir -p /app
 
 COPY ../filters/pandoc_acro-0.11.0-py3-none-any.whl /app/pandoc_acro-0.11.0-py3-none-any.whl
-COPY ../filters/more_pandoc_filters-0.1.0-py3-none-any.whl /app/more_pandoc_filters-0.1.0-py3-none-any.whl
+COPY ../filters/more_pandoc_filters-0.2.0-py3-none-any.whl /app/more_pandoc_filters-0.2.0-py3-none-any.whl
 COPY ../filters/docx_tools-1.0.3-py3-none-any.whl /app/docx_tools-1.0.3-py3-none-any.whl
 
 RUN pip install pandoc-include
 RUN pip install /app/docx_tools-1.0.3-py3-none-any.whl && rm /app/docx_tools-1.0.3-py3-none-any.whl
 RUN pip install /app/pandoc_acro-0.11.0-py3-none-any.whl && rm /app/pandoc_acro-0.11.0-py3-none-any.whl
-RUN pip install /app/more_pandoc_filters-0.1.0-py3-none-any.whl && rm /app/more_pandoc_filters-0.1.0-py3-none-any.whl
+RUN pip install /app/more_pandoc_filters-0.2.0-py3-none-any.whl && rm /app/more_pandoc_filters-0.2.0-py3-none-any.whl
 
 RUN chmod 1777 /tmp
 ENV PATH=$PATH:/usr/local/bin/

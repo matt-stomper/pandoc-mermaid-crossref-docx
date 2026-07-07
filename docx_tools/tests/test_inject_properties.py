@@ -10,13 +10,14 @@ from docx_tools.inject_properties import read_properties_from_yaml, _validate_in
 
 def test_read_properties_from_yaml_returns_safe_loaded_yaml():
     yaml_content = """
-title: Example Document
-version: 1
-published: true
+custom_properties:
+  title: Example Document
+  version: 1
+  published: true
 """
 
     with patch("builtins.open", mock_open(read_data=yaml_content)) as mocked_open:
-        result = read_properties_from_yaml("properties.yaml")
+        result = read_properties_from_yaml("properties.yaml", custom_property_key="custom_properties")
 
     mocked_open.assert_called_once_with("properties.yaml", "r")
     assert result == {

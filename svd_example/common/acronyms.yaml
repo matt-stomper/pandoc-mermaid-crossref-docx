@@ -7,4 +7,22 @@ acronyms:
   http:
     short: HTTP
     long: HyperText Transfer Protocol
+  https:
+    short: HTTPS
+    long: HyperText Transfer Protocol Secure
+  idd:
+    short: IDD
+    long: Interface Design Document
+  sdd:
+    short: SDD
+    long: Software Design Document
+  std:
+    short: STD
+    long: Software Test Report
+  str:
+    short: STR
+    long: Software Test Report
+  svd:
+    short: SVD
+    long: Software Version Description
 ---

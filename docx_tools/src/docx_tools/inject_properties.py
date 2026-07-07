@@ -11,6 +11,9 @@ from docxcompose.composer import Composer
 from docxcompose.properties import CustomProperties
 from typing import Any
 
+from docx_tools.revision_table import update_docx_revisions_table
+from docx_tools.yaml_helper import YamlHelper
+
 
 @click.group()
 def cli():
@@ -18,12 +21,14 @@ def cli():
     pass
 
 @cli.command()
-@click.option('-y', help='yaml files containing custom properties', required=True)
-@click.option('-i', help='Input Docx file', required=True)
-@click.option('-t', help='Title page docx file')
-@click.option('-o', help='Output Docx file')
+@click.option('-y', type=click.Path(exists=True), help='yaml files containing custom properties', required=True)
+@click.option('-k', help='Key containing the custom properties', required=False)
+@click.option('-i', type=click.Path(exists=True), help='Input Docx file', required=True)
+@click.option('-o', help='Output Docx file', required=True)
+@click.option('-t', type=click.Path(exists=True), help='Template or title page docx file')
+@click.option('-r', help='Revisions table key in the custom properties', required=False)
 @click.option('-u', help='Force updates in the word document', is_flag=True, default=True)
-def combine_properties_document(y, i, t, o, u):
+def combine_properties_document(y, k, i, t, o, r, u):
     """
     This function takes a title page and a docx file and adds in custom properties to both documents
     before appending the input docx into the title page docx.
@@ -31,6 +36,7 @@ def combine_properties_document(y, i, t, o, u):
     :param i: Docx input containing the main content of the document
     :param t: Docx title page
     :param o: Save location of final document
+    :param r: Revisions table key in the custom properties
     :param u: Trigger updates in the word document
     :return: None
     """
@@ -42,22 +48,34 @@ def combine_properties_document(y, i, t, o, u):
     if not _validate_input_files(input_docx, required=True):
         exit()
 
-    if not _validate_input_files(custom_properties, required=False):
+    if not _validate_input_files(custom_properties, required=True):
         exit()
 
-    if not _validate_input_files(title_docx, required=False):
-        exit()
-
-    properties = read_properties_from_yaml(y)
-    title_doc: DocumentObject = _inject_properties(document_path=t, properties=properties)
-    composer: Composer = Composer(title_doc)
+    properties = read_properties_from_yaml(y, k)
     doc: DocumentObject = _inject_properties(i, properties)
-    composer.append(doc, remove_property_fields=False)
 
-    if update_fields:
-        _mark_fields_for_update_on_open(title_doc)
+    if t:
+        _validate_input_files(title_docx, required=True)
+        title_doc: DocumentObject = _inject_properties(document_path=t, properties=properties)
+        if update_fields:
+            _mark_fields_for_update_on_open(title_doc)
+        composer: Composer = Composer(title_doc)
+        composer.append(doc, remove_property_fields=False)
+    else:
+        composer: Composer = Composer(input_docx)
 
     composer.save(o)
+
+    if r:
+        revisions_table = YamlHelper.read_yaml_properties_by_key(y, r)
+        print(revisions_table)
+        if isinstance(revisions_table, dict):
+
+            update_docx_revisions_table(
+                input_docx=o,
+                output_docx=o,
+                revisions_metadata=revisions_table,
+            )
 
 
 def _mark_fields_for_update_on_open(doc: DocumentObject) -> None:
@@ -77,27 +95,20 @@ def _mark_fields_for_update_on_open(doc: DocumentObject) -> None:
     update_fields.set(qn('w:val'), 'true')
 
 
-def read_properties_from_yaml(file_path) -> Any:
+def read_properties_from_yaml(file_path, custom_property_key: str | None = None) -> Any:
     """
-    This function takes a yaml file and returns back a list of custom properties
+    This function takes a yaml file and returns a list of custom properties
     :param file_path: path to yaml file containing custom properties
-    :return: Any object returned from safe_load
+    :param custom_property_key: key in yaml file containing the properties
+    :return: Any object returned from safe_load, but generally a dict of key|value pairs
     """
-    with open(file_path, 'r') as f:
-        properties = yaml.safe_load(f)
-        return properties
 
-@cli.command
-@click.option('-document-path', help='.docx document needing the custom properties.', required=True)
-@click.option('-properties', help='yaml files containing custom properties.', required=True)
-def inject_properties_into_document(document_path: str, properties: Any) -> DocumentObject:
-    """
-    This function injects custom properties into a docx using docxcompose
-    :param document_path: path to docx
-    :param properties: List of custom properties
-    :return: docxcompose document with injected custom properties
-    """
-    return _inject_properties(document_path, properties)
+    if custom_property_key is None:
+        print("No custom property key provided.")
+        return YamlHelper.read_yaml(file_path=file_path)
+
+    return YamlHelper.read_yaml_properties_by_key(file_path=file_path,
+                                                  custom_property_key=custom_property_key)
 
 def _inject_properties(document_path: str, properties: Any) -> DocumentObject:
     doc = Document(document_path)

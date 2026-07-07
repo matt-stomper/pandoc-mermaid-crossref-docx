@@ -1,7 +1,7 @@
 - Description: This application is a lightweight Flask-based web service for processing +http requests. It interfaces with underlying modules and handlers providing data processing, then serves responses as RESTful APIs.
 - Deployment Server: Gunicorn running on Linux (using Docker).
 
-```{.mermaid #fig:overview_diagram caption="Overview Diagram"}
+```{.mermaid caption="Overview Diagram" #fig:overview_diagram}
 flowchart TD
     Client([Client Browser or API Client])
     subgraph Gunicorn[Gunicorn WSGI Server]

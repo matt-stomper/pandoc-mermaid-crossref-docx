@@ -2,3 +2,9 @@
 .DS_Store/
 images
 .venv
+svd_example/02_svd.md
+svd_example/03_svd.md
+svd_example/mermaid-filter.err
+svd_example/bibliography_table.log
+svd_example/svd.docx
+svd_example/final_svd.docx

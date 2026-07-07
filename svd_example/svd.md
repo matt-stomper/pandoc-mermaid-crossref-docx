@@ -3,64 +3,93 @@
 # SCOPE
 
 ## Identification
+
 - Name: Flask Web Application
 - Version: 1.0.0
 - Deployment Environment: Containerized Linux environment (e.g., Docker)
-- Interface: REST API accessible over HTTP(S)
+- Interface: REST API accessible over +https
 
 ## System Overview
 
 !include common/system_overview.md
 
 ## Document Overview
+
 This document details the software's version, components, and configuration, following MIL-STD-498 guidance. It specifies modified components, dependencies, deployment configuration, and instructions for this release.
 
-# Inventory of Materials
+# REFERENCE DOCUMENTS
+
+::: {#refs}
+:::
+
+:::{#reference_table}
+
+| References  |
+|-------------|
+| placeholder |
+: Reference Documents {#tbl:reference_documents}
+
+:::
+
+# VERSION DESCRIPTION
+
+[@idd-XXXX] provides details of the software design.
+[@str-XXXX] provides details of testing outcomes. 
+
+## Inventory of Materials Released
+
 The version comprises the following files, directories, and artifacts:
+
 - **Source Code Repository**: [Git Repository URL]
     - Branch/Commit: [Branch Name] / [Commit SHA]
-
 - **Build Scripts**:
     - `Dockerfile` - for containerized deployment
     - `requirements.txt` - for Python dependencies
-
 - **Entrypoint**: `gunicorn` serving the Flask app located at `application.py`.
 - Docker Service Configuration (e.g., YAML):
-``` 
-     services:
-       flask-app:
-         build: .
-         command: gunicorn -w 4 -b 0.0.0.0:5000 app:app
-         ports:
-           - "5000:5000"
-         volumes:
-           - ./app:/usr/src/app
-```
 - Executables:
     - `app.py`: Flask entry script
     - `gunicorn` worker service
 
-#  Configuration Identification
+## Inventory of Software Contents
+
+## Adaptation data
+
+###  Configuration Identification
+
 **Hardware**:
+
 - Architecture: x86_64 (Linux)
 - Memory Recommended: 4GB Min
 
 **Software**:
+
 - Gunicorn Version: 20.1.0
 - Python Version: 3.12+
 - Flask Version: 2.3.2
 - Docker Version: 23.0.1
 
 **Dependencies**: Defined in `requirements.txt` as:
+
 ``` 
    Flask==2.3.2
    gunicorn==20.1.0
    some-other-dependency==1.2.3
 ```
-# Version Description
 
-## Baseline
-The Flask app incorporates specific handlers to process and return RESTful API requests. It relies on Gunicorn to serve as the WSGI server.
+## Related Documents
+
+@tbl:related_documents lists the documents associated with the release of the software identified in this +vdd.
+
+| Identifier | Revision | Title                     | Date       | Reference |
+|------------|:--------:|---------------------------|------------|:---------:|
+| IDD-XXXX   |    1     | Interface Design Document | yyyy-mm-dd | @idd-XXXX |
+| STD-XXXX   |    2     | Software Test Description | yyyy-mm-dd | @std-XXXX |
+| STR-XXXX   |    3     | Software Test Report      | yyyy-mm-dd | @str-XXXX |
+| SUM-XXXX   |    1     | Software User Manual      | yyyy-mm-dd | @sum-XXXX |
+
+: Related documents {#tbl:related_documents}
+
 
 ## Modules and Files
 
@@ -71,32 +100,15 @@ The Flask app incorporates specific handlers to process and return RESTful API r
 - `run.sh`: Startup script for initializing Gunicorn
 
 ## Changes in This Release
+
 - Added endpoints:
     - `/api/resource`: Handles API GET/POST requests
 
 - Optimized static file handling.
 - Increased Gunicorn worker count from 2 to 4 to improve performance.
 
-# Adaptation Data
-
-Specifies no adaptation required for basic operation but includes configuration for specific environments:
-- **Environment Variables**:
-    - `APP_ENV`: `development` or `production`
-    - `DEBUG`: `True/False`
-
-- **Configuration File Loader**:
-    - Uses `settings.py` or external `config.json` for dynamic configurations.
-
-# Release Notes
-- **Release Identifier**: `flask-webapp-v1.0.0`
-- **Incremental Release or Full Release**: Full Release
-- **Known Issues**: None reported.
-
-_Tested Environments_:
-- Docker: Ubuntu 20.04 with Python 3.9
-- Gunicorn Load Testing: Avg. Response Time < 200ms for 1000 RPS.
-
 # Installation Instructions
+
 **Installation via Docker**:
 1. Clone the repository:
 ``` bash
@@ -117,14 +129,6 @@ _Tested Environments_:
    pip install -r requirements.txt
    gunicorn -w 4 -b 127.0.0.1:5000 app:app
 ```
-# References
-
-- MIL-STD-498 Documentation
-- Flask Documentation: [https://flask.palletsprojects.com/](https://flask.palletsprojects.com/)
-- Gunicorn Documentation: [https://gunicorn.org/](https://gunicorn.org/)
-- Docker Reference: [https://docs.docker.com/](https://docs.docker.com/)
-
-This should follow the format and structure derived from MIL-STD-498, tailored for the Flask application running on Gunicorn.
 
 # Notes
 
@@ -151,7 +155,7 @@ This should follow the format and structure derived from MIL-STD-498, tailored f
 
 : Terminology Table {#tbl:terminology}
 
-:::landscape
+::: landscape
 
 # Appendix A. Interface and Deployment Matrix
 

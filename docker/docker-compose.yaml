@@ -2,7 +2,7 @@ x-shared-defaults: &defaults
     platform: linux/amd64
     build:
       context: .
-    image: mattstomper/puppeteer-pandoc-mermaid-crossref:1.1.0-rc4
+    image: mattstomper/puppeteer-pandoc-mermaid-crossref:1.1.0-rc6
 
 services:
   pandoc-mermaid-crossref:
@@ -20,7 +20,7 @@ services:
     entrypoint:
       - /bin/sh
       - -c
-      - pandoc -D docx > /home/node/data/svd_example/default.docx
+      - pandoc --reference-doc /home/node/data/svd_example/default.docx
 
   bash:
     <<: *defaults
