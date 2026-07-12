@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="sort-only" default-locale="en-US">
+  <info>
+    <title>Shorteneric citation style</title>
+    <id>http://www.zotero.org/styles/bibtex</id>
+  </info>
+  <citation disambiguate-add-year-suffix="true" disambiguate-add-names="false" disambiguate-add-givenname="false" collapse="year">
+    <sort>
+      <key variable="citation-number"/>
+    </sort>
+    <layout delimiter=" ">
+      <text variable="identifier"/>
+      <text variable="citation-number" prefix="[" suffix="]"/>
+    </layout>
+  </citation>
+    <bibliography hanging-indent="false">
+    <sort>
+      <key variable="citation-number"/>
+    </sort>
+    <layout>
+      <group delimiter=" | ">
+        <text variable="citation-number" prefix="[" suffix="]" />
+        <text variable="revision" prefix=" Rev " />
+        <text variable="identifier" prefix=" Identifier " />
+        <text variable="title" prefix=" Title " />
+      </group>
+    </layout>
+  </bibliography>
+</style>

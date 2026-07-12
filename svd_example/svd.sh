@@ -2,7 +2,7 @@
 
 cleanup_working_files() {
     echo "Cleaning up..."
-    files=("02-svd.md" "03-svd.md" "mermaid-filter.err" "svd.docx")
+    files=("02-svd.md" "03-svd.md" "mermaid-filter.err" "svd.docx" "bibliography_table.log")
 
     for file in "${files[@]}"; do
         if [ -f "$file" ]; then
@@ -15,21 +15,25 @@ cleanup_working_files() {
 
 docx=svd.docx
 final_doc=final_svd.docx
-template=reference_doc.docx
+template=common/template/reference_doc_2.docx
 properties=svd_custom_properties.yaml
 
 echo "Running 01_svd.yaml..."
-pandoc -d 01_svd.yaml || cleanup_working_files
+pandoc -d 01_svd.yaml --verbose
 
 echo "Running 02_svd.yaml..."
-pandoc -d 02_svd.yaml || cleanup_working_files
+pandoc -d 02_svd.yaml
 
 echo "Running 03_svd.yaml..."
-pandoc -d 03_svd.yaml || cleanup_working_files
+pandoc -d 03_svd.yaml
 
 echo "Running inject-properties.py..."
-python3 -m docx_tools.inject_properties combine-properties-document -y $properties -i $docx -t $template -o $final_doc
+python3 -m docx_tools.inject_properties combine-properties-document \
+  -y $properties \
+  -k "custom_properties" \
+  -i $docx \
+  -t $template \
+  -r "revisions_table" \
+  -o $final_doc
 
 cleanup_working_files
-
-

@@ -1,0 +1,22 @@
+[tool.poe]
+executor.type = "uv"
+
+[tool.poe.tasks]
+setup = "uv sync --project docx_tools --all-extras"
+test = "pytest docx_tools/tests"
+lint = "uv --project docx_tools run ruff check"
+
+[tool.poe.tasks.build-docker]
+sequence = ["build-docx-tools", "mv-docx-tools-docker", "docker-compose"]
+
+[tool.poe.tasks.build-docx-tools]
+cmd = "uv build --project docx_tools"
+
+[tool.poe.tasks.mv-docx-tools-docker]
+cmd = "mv docx_tools/dist/docx_tools-*-py3-none-any.whl docker/filters/"
+
+[tool.poe.tasks.docker-compose]
+cmd = "docker compose -f docker/docker-compose.yaml build pandoc-mermaid-crossref"
+
+[tool.poe.tasks.run-example]
+cmd = "docker compose -f docker/docker-compose.yaml run --rm pandoc-mermaid-crossref"
