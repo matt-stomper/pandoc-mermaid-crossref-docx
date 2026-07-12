@@ -1,6 +1,20 @@
 ---
-doc_title: Web Application
-doc_sub_title: Software Version Description
-version: 1.0.0
-classification: OFFICIAL
+custom_properties:
+  doc_title: Web Application
+  doc_sub_title: Software Version Description
+  version: 1.0.0
+  classification: "[CLASSIFICATION]"
+  doc_id: 123-ABC
+
+revisions_table:
+  bookmark: "Revision_table"
+  rev_1:
+    number: "1"
+    date: "2026-07-07"
+    description: "Initial release"
+  rev_2:
+    number: "2"
+    date: "2026-10-07"
+    description: "Future release"
+
 ...

@@ -2,16 +2,7 @@
 input-file: 03-svd.md
 output-file: svd.docx
 filters:
-  - pandoc-crossref
-  - /app/page_break_heading_1.lua
-toc: true
-toc-depth: 5
-reference-doc: reference_doc.docx
-metadata:
-  figureTitle: "Figure"
-  tableTitle: "Table"
-  figPrefix: "Figure"
-  tblPrefix: "Table"
-  loftitle: "# List of Figures"
-  lotTitle: "# List of Tables"
+#  Docx only filters
+  - level-1-heading-page-break
+  - landscape-section-filter
 ...

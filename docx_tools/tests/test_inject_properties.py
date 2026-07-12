@@ -2,24 +2,22 @@ from pathlib import Path
 from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
+from docx_tools.inject_properties import read_properties_from_yaml, _validate_input_files, _inject_properties, \
+    combine_properties_document
 
-from docx_tools.inject_properties import (
-    _inject_properties,
-    _validate_input_files,
-    combine_properties_document,
-    read_properties_from_yaml,
-)
+
 
 
 def test_read_properties_from_yaml_returns_safe_loaded_yaml():
     yaml_content = """
-title: Example Document
-version: 1
-published: true
+custom_properties:
+  title: Example Document
+  version: 1
+  published: true
 """
 
     with patch("builtins.open", mock_open(read_data=yaml_content)) as mocked_open:
-        result = read_properties_from_yaml("properties.yaml")
+        result = read_properties_from_yaml("properties.yaml", custom_property_key="custom_properties")
 
     mocked_open.assert_called_once_with("properties.yaml", "r")
     assert result == {

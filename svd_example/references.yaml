@@ -1,0 +1,27 @@
+---
+references:
+    - id: sum-XXXX
+      identifier: SUM-001
+      title: Software User Manual
+      revision: 1
+      date: 2026-07-07
+      type: document
+    - id: idd-XXXX
+      identifier: IDD-XXXX
+      title: Interface Design Document
+      revision: 1
+      date: 2026-08-10
+      type: document
+    - id: std-XXXX
+      identifier: STD-XXXX
+      title: Software Test Description
+      revision: 2
+      date: 2026-08-12
+      type: document
+    - id: str-XXXX
+      identifier: STR-003
+      title: Software Test Report
+      revision: 3
+      date: 2026-07-01
+      type: document
+...
