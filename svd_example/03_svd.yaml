@@ -1,8 +1,0 @@
----
-input-file: 03-svd.md
-output-file: svd.docx
-filters:
-#  Docx only filters
-  - level-1-heading-page-break
-  - landscape-section-filter
-...

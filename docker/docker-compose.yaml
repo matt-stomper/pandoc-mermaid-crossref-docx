@@ -2,7 +2,7 @@ x-shared-defaults: &defaults
     platform: linux/amd64
     build:
       context: .
-    image: mattstomper/puppeteer-pandoc-mermaid-crossref:1.1.0-rc6
+    image: mattstomper/puppeteer-pandoc-mermaid-crossref:1.1.0-rc7
 
 services:
   pandoc-mermaid-crossref:

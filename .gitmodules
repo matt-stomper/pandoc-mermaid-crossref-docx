@@ -1,0 +1,3 @@
+[submodule "docker/filters/diagram"]
+	path = docker/filters/diagram
+	url = https://github.com/pandoc-ext/diagram.git

@@ -21,12 +21,6 @@ properties=svd_custom_properties.yaml
 echo "Running 01_svd.yaml..."
 pandoc -d 01_svd.yaml --verbose
 
-echo "Running 02_svd.yaml..."
-pandoc -d 02_svd.yaml
-
-echo "Running 03_svd.yaml..."
-pandoc -d 03_svd.yaml
-
 echo "Running inject-properties.py..."
 python3 -m docx_tools.inject_properties combine-properties-document \
   -y $properties \
