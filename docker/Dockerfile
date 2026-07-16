@@ -35,6 +35,7 @@ RUN rm /tmp/pandoc.deb
 
 RUN curl -L -o pandoc-crossref.tar.xz https://github.com/lierdakil/pandoc-crossref/releases/download/v0.3.24a/pandoc-crossref-Linux-X64.tar.xz
 RUN tar -xf pandoc-crossref.tar.xz
+RUN apt-get remove -y curl
 RUN mv pandoc-crossref /usr/local/bin/
 RUN chmod +x /usr/local/bin/pandoc-crossref
 RUN rm pandoc-crossref.tar.xz
@@ -49,6 +50,7 @@ COPY ../filters/more_pandoc_filters-0.2.0-py3-none-any.whl /app/more_pandoc_filt
 COPY ../filters/docx_tools-1.0.3-py3-none-any.whl /app/docx_tools-1.0.3-py3-none-any.whl
 COPY ../filters/diagram/diagram.lua /app/filters/diagram.lua
 COPY ../filters/diagram/_extensions /app/filters/_extensions
+COPY ../.puppeteer.json /app/filters/
 
 RUN pip install pandoc-include
 RUN pip install /app/docx_tools-1.0.3-py3-none-any.whl && rm /app/docx_tools-1.0.3-py3-none-any.whl
