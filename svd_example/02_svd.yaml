@@ -1,0 +1,38 @@
+---
+input-file: svd.md
+output-file: svd.docx
+filters:
+  - /app/filters/diagram.lua
+  - pandoc-crossref
+  - citeproc
+  - bibliography-table-filter
+  - table-column-filter
+  - level-1-heading-page-break
+  - landscape-section-filter
+toc: false
+toc-depth: 5
+reference-doc: reference_doc.docx
+bibliography: ./common/references.yaml
+csl: ./common/citation-style.csl
+metadata:
+  figureTitle: "Figure"
+  tableTitle: "Table"
+  figPrefix: "Figure"
+  tblPrefix: "Table"
+  secPrefix: "Section"
+  sectionTitle: "Section"
+  loftitle: "List of Figures"
+  lotTitle: "List of Tables"
+  link-citations: True
+  link-bibliography: true
+  bibliography-table-target: reference_table
+  diagram:
+    cache: true
+    cache-dir: /home/node/data/svd_example/images
+    engine:
+      mermaid:
+        execpath:
+          - mmdc
+          - -p
+          - /app/filters/.puppeteer.json
+...

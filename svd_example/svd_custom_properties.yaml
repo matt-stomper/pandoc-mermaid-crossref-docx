@@ -3,7 +3,7 @@ custom_properties:
   doc_title: Web Application
   doc_sub_title: Software Version Description
   version: 1.0.0
-  classification: "[CLASSIFICATION]"
+  classification: "INJECTED CLASSIFICATION"
   doc_id: 123-ABC
 
 revisions_table:

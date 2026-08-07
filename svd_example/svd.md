@@ -6,7 +6,7 @@
 
 - Name: Flask Web Application
 - Version: 1.0.0
-- Deployment Environment: Containerized Linux environment (e.g., Docker)
+- Deployment Environment: Containerised Linux environment (e.g., Docker)
 - Interface: REST API accessible over +https
 
 ## System Overview
@@ -51,6 +51,12 @@ The version comprises the following files, directories, and artifacts:
     - `app.py`: Flask entry script
     - `gunicorn` worker service
 
+| ID | Description      | Repo                                                                             |
+|----|------------------|----------------------------------------------------------------------------------|
+| 1. | unbalanced-table | [matt-stomper](https://github.com/matt-stomper/pandoc-mermaid-crossref-docx.git) |
+
+: Table columns fixed with filter {#tbl:materials colWidths="10 60 30"}
+
 ## Inventory of Software Contents
 
 ## Adaptation data
@@ -71,7 +77,7 @@ The version comprises the following files, directories, and artifacts:
 
 **Dependencies**: Defined in `requirements.txt` as:
 
-``` 
+``` toml
    Flask==2.3.2
    gunicorn==20.1.0
    some-other-dependency==1.2.3
@@ -153,7 +159,7 @@ The version comprises the following files, directories, and artifacts:
 | **Route**               | A URL path defined in Flask that maps HTTP requests to specific functions or logic in the application.                                               |
 | **REST API**            | A type of API built using Representational State Transfer principles, allowing stateless communication between the client and server over HTTP.      |
 
-: Terminology Table {#tbl:terminology}
+: Terminology Table {#tbl:terminology colWidths="20 80"}
 
 ::: landscape
 
@@ -184,6 +190,6 @@ The following table provides a consolidated reference for key application interf
 | Security             | Public Exposure        | Determines whether the service is exposed externally.                     | Network configuration            | Internal or controlled external access | Firewall, reverse proxy, or container networking | Impacts attack surface and access control requirements.          | Review network bindings and ingress rules.                        |
 | Security             | Secrets Handling       | Method for providing sensitive values.                                    | Runtime environment              | Environment variables or secret store  | Deployment platform configuration                | Prevents secrets from being hardcoded in source files.           | Confirm sensitive values are not committed to repository.         |
 
-: Interface and Deployment Matrix Table {#tbl:interface-deployment-matrix}
+: Interface and Deployment Matrix Table {#tbl:interface-deployment-matrix colWidths="10 10 11 8 10 13 18 17"}
 
 :::

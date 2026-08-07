@@ -15,11 +15,18 @@ cleanup_working_files() {
 
 docx=svd.docx
 final_doc=final_svd.docx
-template=common/template/reference_doc_2.docx
+template=common/template/reference_doc_3.docx
 properties=svd_custom_properties.yaml
 
 echo "Running 01_svd.yaml..."
-pandoc -d 01_svd.yaml --verbose
+if pandoc -d 01_svd.yaml --verbose; then
+  echo "Error in 01_svd.yaml"
+fi
+
+echo "Running 02_svd.yaml..."
+if pandoc -d 02_svd.yaml --verbose; then
+  echo "Error in 01_svd.yaml"
+fi
 
 echo "Running inject-properties.py..."
 python3 -m docx_tools.inject_properties combine-properties-document \
